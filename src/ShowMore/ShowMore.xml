@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="ShowMore.widget.ShowMore" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>ShowMore</name>
+    <description>The description of this widget.</description>
+
+    <icon />
+
+    <properties>
+        <property key="textDataAttr" type="attribute">
+            <caption>Text Attribute</caption>
+            <category>Appearance</category>
+            <description>The attribute to display.</description>
+            <attributeTypes>
+                <attributeType name="String" />
+            </attributeTypes>
+        </property>
+		<property key="showChars" type="integer" required="true" defaultValue="100">
+			<caption>Show Characters</caption>
+			<category>Appearance</category>
+			<description>The number of characters to show before "show more" is clicked.</description>
+		</property>
+    </properties>
+</widget>
