@@ -42,21 +42,23 @@ define([
 
         // Parameters configured in the Modeler.
         textDataAttr: "",
-        showChars: 100,
+        showChars: 80,
 
         // Internal variables. Non-primitives created in the prototype are shared between all widget instances.
         ellipsestext: "...",
-        moretext: "Show more >",
-        lesstext: "Show less",
+        moretext: "More",
+        lesstext: "Less",
         textData: "",
 		_handles: null,
 		shortText: "",
 		_showingAll: false,
+        _clickHandles: null,
 
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function() {
             logger.debug(this.id + ".constructor");
 			this._handles = [];
+            this._clickHandles = [];
         },
 
         // dijit._WidgetBase.postCreate is called after constructing the widget. Implement to do extra setup work.
@@ -64,7 +66,6 @@ define([
             logger.debug(this.id + ".postCreate");
 
             this.moreLink.innerHTML = this.moretext;
-
         },
 
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
@@ -82,15 +83,35 @@ define([
                 this.textData = this._contextObj.get(this.textDataAttr);
 
                 if (this.textData.length > this.showChars) {
-
                     this.shortText = this.textData.substr(0, this.showChars) + "...";
-					this.textNode.innerHTML = this.shortText;
+					if(this.textNode) {
+						if (this._showingAll) {
+							this.moreLink.innerHTML = this.lesstext;
+							this.textNode.innerHTML = this.textData;
+						} else {
+							this.moreLink.innerHTML = this.moretext;
+							this.textNode.innerHTML = this.shortText;
+           				}
+                    }
 
-                    on(this.moreLink, "click", dojoLang.hitch(this, this._toggle));
+                    if(this.moreLink) {
+						var i = this._clickHandles.length;
+						while (i--) {
+							var removeHandle = this._clickHandles.pop();
+							dojo.disconnect(removeHandle);
+						}
 
+                        var handle = on(this.moreLink, "click", dojoLang.hitch(this, this._toggle));
+                        this._clickHandles.push(handle);
+                    }
                 } else {
-                    this.textNode = this.textNode.innerHTML;
-                    dojoClass.add(this.moreLink, "hidden");
+                    if(this.textNode) {
+                        this.textNode.innerHTML = this.textData; //this.textNode.innerHTML;
+                    }
+
+                    if(this.moreLink) {
+                        dojoClass.add(this.moreLink, "hidden");
+                    }
                 }
             }
 
