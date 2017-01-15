@@ -19,5 +19,15 @@
 			<category>Appearance</category>
 			<description>The number of characters to show before "show more" is clicked.</description>
 		</property>
+		<property key="moretext" type="string" required="true" defaultValue="More">
+			<caption>More Link Text</caption>
+			<category>Appearance</category>
+			<description>The text displayed for the "More" link.</description>
+		</property>
+		<property key="lesstext" type="string" required="true" defaultValue="Less">
+			<caption>Less Link Text</caption>
+			<category>Appearance</category>
+			<description>The text displayed for the "Less" link.</description>
+		</property>
     </properties>
 </widget>

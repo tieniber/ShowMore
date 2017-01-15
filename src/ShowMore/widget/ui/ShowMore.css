@@ -1,3 +1,7 @@
 .showMore .hidden {
 	display:none;
 }
+
+.showMore > a, .showMore > div{
+	display: inline;
+}
