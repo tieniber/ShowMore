@@ -24,7 +24,7 @@ define([
     "dojo/dom-class",
     "dojo/_base/lang",
     "dojo/on",
-	"dojo/_base/array",
+    "dojo/_base/array",
 
     "dojo/text!ShowMore/widget/template/ShowMore.html"
 ], function(declare, _WidgetBase, _TemplatedMixin, dojoClass, dojoLang, on, dojoArray, widgetTemplate) {
@@ -49,15 +49,15 @@ define([
         moretext: "More",
         lesstext: "Less",
         textData: "",
-		_handles: null,
-		shortText: "",
-		_showingAll: false,
+        _handles: null,
+        shortText: "",
+        _showingAll: false,
         _clickHandles: null,
 
         // dojo.declare.constructor is called to construct the widget instance. Implement to initialize non-primitive properties.
         constructor: function() {
             logger.debug(this.id + ".constructor");
-			this._handles = [];
+            this._handles = [];
             this._clickHandles = [];
         },
 
@@ -74,64 +74,66 @@ define([
 
             this._contextObj = obj;
 
-			this._resetSubscriptions();
-			this._updateRendering(callback);
+            this._resetSubscriptions();
+            this._updateRendering(callback);
         },
 
-		_updateRendering: function(callback) {
-			if (this._contextObj) {
+        _updateRendering: function(callback) {
+            if (this._contextObj) {
                 this.textData = this._contextObj.get(this.textDataAttr);
 
                 if (this.textData.length > this.showChars) {
-                    this.shortText = this.textData.substr(0, this.showChars) + "...";
-					if(this.textNode) {
-						if (this._showingAll) {
-							this.moreLink.innerHTML = this.lesstext;
-							this.textNode.innerHTML = this.textData;
-						} else {
-							this.moreLink.innerHTML = this.moretext;
-							this.textNode.innerHTML = this.shortText;
-           				}
+                    this.shortText = this.textData.substr(0, this.showChars); // chop at length defined.
+                    var goodStop = this.shortText.lastIndexOf(' '); // find the last space to not chop in the middle of words.
+                    this.shortText = this.shortText.substr(0, goodStop) + this.ellipsestext; // use the goodStop to chop.
+                    if (this.textNode) {
+                        if (this._showingAll) {
+                            this.moreLink.innerHTML = this.lesstext;
+                            this.textNode.innerHTML = this.textData;
+                        } else {
+                            this.moreLink.innerHTML = this.moretext;
+                            this.textNode.innerHTML = this.shortText;
+                        }
                     }
 
-                    if(this.moreLink) {
-						var i = this._clickHandles.length;
-						while (i--) {
-							var removeHandle = this._clickHandles.pop();
-							dojo.disconnect(removeHandle);
-						}
+                    if (this.moreLink) {
+                        var i = this._clickHandles.length;
+                        while (i--) {
+                            var removeHandle = this._clickHandles.pop();
+                            dojo.disconnect(removeHandle);
+                        }
 
                         var handle = on(this.moreLink, "click", dojoLang.hitch(this, this._toggle));
                         this._clickHandles.push(handle);
                     }
                 } else {
-                    if(this.textNode) {
+                    if (this.textNode) {
                         this.textNode.innerHTML = this.textData; //this.textNode.innerHTML;
                     }
 
-                    if(this.moreLink) {
+                    if (this.moreLink) {
                         dojoClass.add(this.moreLink, "hidden");
                     }
                 }
             }
 
-			if (callback) {
-				callback()
-			};
-		},
+            if (callback) {
+                callback()
+            };
+        },
 
         _toggle: function() {
 
 
             if (this._showingAll) {
-				this.moreLink.innerHTML = this.moretext;
-				this.textNode.innerHTML = this.shortText;
+                this.moreLink.innerHTML = this.moretext;
+                this.textNode.innerHTML = this.shortText;
             } else {
-				this.moreLink.innerHTML = this.lesstext;
-				this.textNode.innerHTML = this.textData;
+                this.moreLink.innerHTML = this.lesstext;
+                this.textNode.innerHTML = this.textData;
             }
 
-			this._showingAll = !this._showingAll;
+            this._showingAll = !this._showingAll;
 
         },
 
@@ -151,17 +153,17 @@ define([
             // Clean up listeners, helper objects, etc. There is no need to remove listeners added with this.connect / this.subscribe / this.own.
         },
 
-		_unsubscribe: function () {
-          if (this._handles) {
-              dojoArray.forEach(this._handles, function (handle) {
-                  mx.data.unsubscribe(handle);
-              });
-              this._handles = [];
-          }
+        _unsubscribe: function() {
+            if (this._handles) {
+                dojoArray.forEach(this._handles, function(handle) {
+                    mx.data.unsubscribe(handle);
+                });
+                this._handles = [];
+            }
         },
 
         // Reset subscriptions.
-        _resetSubscriptions: function () {
+        _resetSubscriptions: function() {
             logger.debug(this.id + "._resetSubscriptions");
             // Release handles on previous object, if any.
             this._unsubscribe();
@@ -170,7 +172,7 @@ define([
             if (this._contextObj) {
                 var objectHandle = mx.data.subscribe({
                     guid: this._contextObj.getGuid(),
-                    callback: dojoLang.hitch(this, function (guid) {
+                    callback: dojoLang.hitch(this, function(guid) {
                         this._updateRendering();
                     })
                 });
@@ -178,12 +180,12 @@ define([
                 var attrHandle = mx.data.subscribe({
                     guid: this._contextObj.getGuid(),
                     attr: this.textDataAttr,
-                    callback: dojoLang.hitch(this, function (guid, attr, attrValue) {
+                    callback: dojoLang.hitch(this, function(guid, attr, attrValue) {
                         this._updateRendering();
                     })
                 });
 
-                this._handles = [ objectHandle, attrHandle ];
+                this._handles = [objectHandle, attrHandle];
             }
         }
     });
