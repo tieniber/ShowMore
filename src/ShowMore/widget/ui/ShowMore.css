@@ -1,5 +1,5 @@
 .showMore .hidden {
-	display:none;
+	display:none !important;
 }
 
 .showMore > a, .showMore > div{

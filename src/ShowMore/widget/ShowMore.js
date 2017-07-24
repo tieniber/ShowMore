@@ -105,6 +105,7 @@ define([
 
                         var handle = on(this.moreLink, "click", dojoLang.hitch(this, this._toggle));
                         this._clickHandles.push(handle);
+						dojoClass.remove(this.moreLink, "hidden");
                     }
                 } else {
                     if (this.textNode) {
