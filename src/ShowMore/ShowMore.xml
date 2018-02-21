@@ -19,12 +19,12 @@
 			<category>Appearance</category>
 			<description>The number of characters to show before "show more" is clicked.</description>
 		</property>
-		<property key="moretext" type="string" required="true" defaultValue="More">
+		<property key="moretext" type="translatableString" required="true">
 			<caption>More Link Text</caption>
 			<category>Appearance</category>
 			<description>The text displayed for the "More" link.</description>
 		</property>
-		<property key="lesstext" type="string" required="true" defaultValue="Less">
+		<property key="lesstext" type="translatableString" required="true">
 			<caption>Less Link Text</caption>
 			<category>Appearance</category>
 			<description>The text displayed for the "Less" link.</description>
